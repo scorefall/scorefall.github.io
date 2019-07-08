@@ -10,7 +10,7 @@ if( typeof Rust === "undefined" ) {
     } else if( typeof module === "object" && module.exports ) {
         module.exports = factory();
     } else {
-        Rust.scorefall_ui = factory();
+        Rust.scorefall_studio = factory();
     }
 }( this, function() {
     return (function( module_factory ) {
@@ -19,13 +19,13 @@ if( typeof Rust === "undefined" ) {
         if( typeof process === "object" && typeof process.versions === "object" && typeof process.versions.node === "string" ) {
             var fs = require( "fs" );
             var path = require( "path" );
-            var wasm_path = path.join( __dirname, "scorefall-ui.wasm" );
+            var wasm_path = path.join( __dirname, "scorefall-studio.wasm" );
             var buffer = fs.readFileSync( wasm_path );
             var mod = new WebAssembly.Module( buffer );
             var wasm_instance = new WebAssembly.Instance( mod, instance.imports );
             return instance.initialize( wasm_instance );
         } else {
-            var file = fetch( "scorefall-ui.wasm", {credentials: "same-origin"} );
+            var file = fetch( "scorefall-studio.wasm", {credentials: "same-origin"} );
 
             var wasm_instance = ( typeof WebAssembly.instantiateStreaming === "function"
                 ? WebAssembly.instantiateStreaming( file, instance.imports )
@@ -39,11 +39,11 @@ if( typeof Rust === "undefined" ) {
             return wasm_instance
                 .then( function( wasm_instance ) {
                     var exports = instance.initialize( wasm_instance );
-                    console.log( "Finished loading Rust wasm module 'scorefall_ui'" );
+                    console.log( "Finished loading Rust wasm module 'scorefall_studio'" );
                     return exports;
                 })
                 .catch( function( error ) {
-                    console.log( "Error loading Rust wasm module 'scorefall_ui':", error );
+                    console.log( "Error loading Rust wasm module 'scorefall_studio':", error );
                     throw error;
                 });
         }
@@ -581,6 +581,9 @@ Module.STDWEB_PRIVATE.acquire_tmp = function( dummy ) {
             },
             "__cargo_web_snippet_97495987af1720d8a9a923fa4683a7b683e3acd6": function($0, $1) {
                 console.error( 'Panic error message:', Module.STDWEB_PRIVATE.to_js_string( $0, $1 ) );
+            },
+            "__cargo_web_snippet_d12db81d3ed1d0fcf02f1531e4cad0231dc2f586": function($0, $1) {
+                $0 = Module.STDWEB_PRIVATE.to_js($0);$1 = Module.STDWEB_PRIVATE.to_js($1);window.onresize=function(){var content=document.getElementById("content");var ratio=content.clientHeight/content.clientWidth;var svg=document.getElementById("canvas");var viewbox="0 0 "+($0)+" "+(($1)*ratio);svg.setAttributeNS(null,"viewBox",viewbox);};
             },
             "__cargo_web_snippet_d5e30f74cb752784e06bd97a37b1f89b6c3433a7": function($0, $1, $2) {
                 $1 = Module.STDWEB_PRIVATE.to_js($1);$2 = Module.STDWEB_PRIVATE.to_js($2);Module.STDWEB_PRIVATE.from_js($0, (function(){return($1).getElementById(($2));})());
